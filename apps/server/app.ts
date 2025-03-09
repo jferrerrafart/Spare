@@ -1,4 +1,4 @@
-import express from 'express'
+/*import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 /*import {
@@ -7,7 +7,7 @@ import morgan from 'morgan'
   postWithdrawalController,
 } from './Controller/controller.js'*/
 
-const app = express()
+/*const app = express()
 
 app.use(cors())
 app.use(morgan('dev'))
@@ -17,4 +17,4 @@ app.use(express.json())
 //app.post('/deposit', postDepositController)
 //app.post('/withdrawal', postWithdrawalController)
 
-export default app
+export default app*/
