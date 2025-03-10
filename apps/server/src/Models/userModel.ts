@@ -21,8 +21,7 @@ const UserModel = {
     });
 
     const howManyResponses = {
-      numberResponses: count, //countCompanySurveys(surveys),
-      //los otros parámetros que quiera
+      numberResponses: count,
     };
     return howManyResponses;
   },

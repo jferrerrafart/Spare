@@ -10,9 +10,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import spareAPI from "@/api/spareAPI";
 import moment from "moment";
+import consensyslogo from "/home/josepferrer/BootCamp/Spare/my-turborepo/apps/client/src/utils/consensyslogo.jpg";
 
 import { iSurvey } from "/home/josepferrer/BootCamp/Spare/my-turborepo/apps/client/types/types.ts";
 
@@ -37,12 +47,38 @@ function Dashboard() {
 
   return (
     <>
-      <div className="flex justify-center space-x-30 mt-6 px-4 py-20">
-        <p className="font-medium">Company name</p>
-        <p>Surveys created: {countSurveys}</p>
-        <Link to="/create-survey">
-          <Button>Create New Survey</Button>
-        </Link>
+      <div className="px-27 py-10">
+        <Card className="bg-emerald-100">
+          <CardContent>
+            {/* Contenedor flex con mayor espaciado entre los elementos */}
+            <div className="flex items-center justify-between space-x-3 px-4 py-2">
+              {/* Sección izquierda (Avatar y Username) */}
+              <div className="flex flex-col items-center space-y-2 ml-10">
+                <Avatar className="w-25 h-25">
+                  <AvatarImage src={consensyslogo} />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+                <p className="font-medium">Consensys</p>
+              </div>
+              <div className="max-w-4xl mx-auto ">
+                <Card className="bg-emerald-600 text-white font-bold p-6">
+                  <CardContent>
+                    <p>Surveys created: {countSurveys}</p>
+                    <p>Total responses obtained: </p>
+                    <p>Surveys created: </p>
+                  </CardContent>
+                </Card>
+              </div>
+              <div className="flex flex-col space-y-4 w-40">
+                <Link to="/create-survey">
+                  <Button className="w-full bg-emerald-600">
+                    Create New Survey
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Table Section */}
@@ -82,7 +118,7 @@ function Dashboard() {
                     <TableCell className="text-center">23</TableCell>
                     <TableCell className="text-right px-0">
                       <Link to={`/survey-results/${currentSurvey.id}`}>
-                        <Button className="px-2 py-1 text-xs">
+                        <Button className="bg-emerald-600 px-2 py-1 text-xs">
                           See results
                         </Button>
                       </Link>

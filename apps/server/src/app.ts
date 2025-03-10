@@ -32,7 +32,10 @@ app.get("/user/1/surveys", getAvailableSurveysController); //hardcoded "/user/{i
 app.get("/user/1/survey/{survey_id}", getCompleteSurveyController); //hardcoded "/user/{id}/survey/{survey_id}"
 app.post("/user/1/survey/{survey_id}/answer", postAnswerController); //hardcoded "/user/{id}/survey/{survey_id}/answer"
 app.get("/user/1/rewards", getUserRewardsController); // hardcoded "/user/{id}/rewards"
-app.get("/user/howmanycompletedsurveys/1", getNumberCompletedSurveysController); //para deshardcodear camio el 1 por :user_id
+app.get(
+  "/user/howmanycompletedsurveys/:user_id",
+  getNumberCompletedSurveysController
+); //para deshardcodear camio el 1 por :user_id
 
 //Company Endpoints
 app.get("/company/1", getSurveyDataController); //hardcoded "/company/{id}"

@@ -11,19 +11,28 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import spareAPI from "@/api/spareAPI";
 import moment from "moment";
 
 import { iSurvey } from "/home/josepferrer/BootCamp/Spare/my-turborepo/apps/client/types/types.ts";
 
 function UserDashboard() {
-  const [countSurveys, setCountSurveys] = useState(0);
+  //const [countSurveys, setCountSurveys] = useState(0);
   const [surveyList, setSurveyList] = useState<iSurvey[]>([]);
   const [numberResp, setNumberResp] = useState(0);
-  async function fetchData() {
+  /*async function fetchData() {
     const count = await spareAPI.getCreatedSurveys();
     setCountSurveys(count.companySurveys);
-  }
+  }*/
   async function fetchData2() {
     const surveys = await spareAPI.getSurveyData();
     setSurveyList(surveys.surveys as iSurvey[]);
@@ -35,7 +44,7 @@ function UserDashboard() {
 
   useEffect(() => {
     setInterval(() => {
-      fetchData();
+      //fetchData();
       fetchData2();
       fetchData3();
     }, 1000);
@@ -43,22 +52,49 @@ function UserDashboard() {
 
   return (
     <>
-      <div className="flex justify-center space-x-30 mt-6 px-4 py-20">
-        <p className="font-medium">Username</p>
-        <div>
-          <p>Current rewards:</p>
-          <p>Surveys completed: {numberResp}</p>
-          <p>Daily strike bonus:</p>
-          <p>Survey completion bonus:</p>
-        </div>
-        <div className="flex flex-col space-y-4">
-          <Link to="/">
-            <Button className="w-full">Daily Strike</Button>
-          </Link>
-          <Link to="/">
-            <Button className="w-full">Withdraw rewards</Button>
-          </Link>
-        </div>
+      <div className="px-27 py-10">
+        <Card className="bg-emerald-100">
+          <CardContent>
+            {/* Contenedor flex con mayor espaciado entre los elementos */}
+            <div className="flex items-center justify-between space-x-3 px-4 py-2">
+              {/* Sección izquierda (Avatar y Username) */}
+              <div className="flex flex-col items-center space-y-2 ml-10">
+                <Avatar className="w-27 h-27">
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+                <p className="font-medium">Username</p>
+              </div>
+
+              {/* Sección central (Estadísticas) */}
+              <div className="max-w-4xl mx-auto ">
+                <Card className="bg-emerald-600 text-white font-bold p-6">
+                  <CardContent>
+                    <p>Current rewards: {numberResp * 10} points!</p>
+                    <p>Surveys completed: {numberResp}</p>
+                    <p>Daily strike count:</p>
+                    <p>Daily strike bonus:</p>
+                    <p>Survey completion bonus:</p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Sección derecha (Botones) */}
+              <div className="flex flex-col space-y-4 w-40">
+                <Link to="/">
+                  <Button className="w-full bg-emerald-600">
+                    Daily Strike
+                  </Button>
+                </Link>
+                <Link to="/">
+                  <Button className="w-full bg-emerald-600">
+                    Withdraw rewards
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Table Section */}
@@ -98,7 +134,7 @@ function UserDashboard() {
                     <TableCell className="text-center">23</TableCell>
                     <TableCell className="text-right px-0">
                       <Link to={`/survey-complete/${currentSurvey.id}`}>
-                        <Button className="px-2 py-1 text-xs">
+                        <Button className="px-2 py-1 text-xs bg-emerald-600">
                           Complete survey
                         </Button>
                       </Link>

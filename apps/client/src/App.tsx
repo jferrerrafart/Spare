@@ -43,15 +43,11 @@ function App() {
             </Link>
           </ToggleGroup>
         </div>
-
-        {/* Center: Logo (Always centered) */}
         <h1 className="absolute left-1/2 transform -translate-x-1/2 text-lg font-bold">
           <img src={Sparelogo} alt="Logo" className="h-13" />
         </h1>
-
-        {/* Right Side: Connect Wallet Button */}
         <div className="ml-auto">
-          <Button>Connect Wallet</Button>
+          <Button className="bg-emerald-600">Connect Wallet</Button>
         </div>
       </div>
       <Routes>

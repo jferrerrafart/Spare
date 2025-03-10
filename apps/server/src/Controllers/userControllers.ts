@@ -20,7 +20,16 @@ export async function getNumberCompletedSurveysController(
   req: Request,
   res: Response
 ) {
-  const { user_id } = req.params;
-  const data = await UserModel.getNumberCompletedSurveys(Number(user_id));
-  res.status(200).json(data);
+  try {
+    const { user_id } = req.params;
+    const data = await UserModel.getNumberCompletedSurveys(Number(user_id)); //Number(user_id)
+    if (data) {
+      res.status(200).json(data);
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error fetching number of completed surveys:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 }
