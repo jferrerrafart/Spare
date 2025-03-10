@@ -63,25 +63,33 @@ function Dashboard() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {surveyList.map((currentSurvey) => {
-              return (
-                <TableRow key={currentSurvey.id}>
-                  <TableCell className="font-medium text-left">
-                    {currentSurvey.title}
-                  </TableCell>
-                  <TableCell>
-                    {moment(currentSurvey.created_at).fromNow()}
-                  </TableCell>
-                  <TableCell>2000</TableCell>
-                  <TableCell className="text-center">23</TableCell>
-                  <TableCell className="text-right px-0">
-                    <Link to={`/survey-results/${currentSurvey.id}`}>
-                      <Button className="px-2 py-1 text-xs">See results</Button>
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+            {surveyList
+              .sort(
+                (a, b) =>
+                  new Date(b.created_at).getTime() -
+                  new Date(a.created_at).getTime()
+              )
+              .map((currentSurvey) => {
+                return (
+                  <TableRow key={currentSurvey.id}>
+                    <TableCell className="font-medium text-left">
+                      {currentSurvey.title}
+                    </TableCell>
+                    <TableCell>
+                      {moment(currentSurvey.created_at).fromNow()}
+                    </TableCell>
+                    <TableCell>2000</TableCell>
+                    <TableCell className="text-center">23</TableCell>
+                    <TableCell className="text-right px-0">
+                      <Link to={`/survey-results/${currentSurvey.id}`}>
+                        <Button className="px-2 py-1 text-xs">
+                          See results
+                        </Button>
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
           </TableBody>
         </Table>
       </div>

@@ -19,6 +19,7 @@ import { iSurvey } from "/home/josepferrer/BootCamp/Spare/my-turborepo/apps/clie
 function UserDashboard() {
   const [countSurveys, setCountSurveys] = useState(0);
   const [surveyList, setSurveyList] = useState<iSurvey[]>([]);
+  const [numberResp, setNumberResp] = useState(0);
   async function fetchData() {
     const count = await spareAPI.getCreatedSurveys();
     setCountSurveys(count.companySurveys);
@@ -27,11 +28,16 @@ function UserDashboard() {
     const surveys = await spareAPI.getSurveyData();
     setSurveyList(surveys.surveys as iSurvey[]);
   }
+  async function fetchData3() {
+    const count = await spareAPI.getNumberResponses(1); // aquí iría el user_id, lo he hardcodeado
+    setNumberResp(count.numberResponses);
+  }
 
   useEffect(() => {
     setInterval(() => {
       fetchData();
       fetchData2();
+      fetchData3();
     }, 1000);
   }, []);
 
@@ -41,7 +47,7 @@ function UserDashboard() {
         <p className="font-medium">Username</p>
         <div>
           <p>Current rewards:</p>
-          <p>Surveys completed:</p>
+          <p>Surveys completed: {numberResp}</p>
           <p>Daily strike bonus:</p>
           <p>Survey completion bonus:</p>
         </div>
@@ -73,27 +79,33 @@ function UserDashboard() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {surveyList.map((currentSurvey) => {
-              return (
-                <TableRow key={currentSurvey.id}>
-                  <TableCell className="font-medium text-left">
-                    {currentSurvey.title}
-                  </TableCell>
-                  <TableCell>
-                    {moment(currentSurvey.created_at).fromNow()}
-                  </TableCell>
-                  <TableCell>2000</TableCell>
-                  <TableCell className="text-center">23</TableCell>
-                  <TableCell className="text-right px-0">
-                    <Link to={`/survey-complete/${currentSurvey.id}`}>
-                      <Button className="px-2 py-1 text-xs">
-                        Complete survey
-                      </Button>
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+            {surveyList
+              .sort(
+                (a, b) =>
+                  new Date(b.created_at).getTime() -
+                  new Date(a.created_at).getTime()
+              )
+              .map((currentSurvey) => {
+                return (
+                  <TableRow key={currentSurvey.id}>
+                    <TableCell className="font-medium text-left">
+                      {currentSurvey.title}
+                    </TableCell>
+                    <TableCell>
+                      {moment(currentSurvey.created_at).fromNow()}
+                    </TableCell>
+                    <TableCell>2000</TableCell>
+                    <TableCell className="text-center">23</TableCell>
+                    <TableCell className="text-right px-0">
+                      <Link to={`/survey-complete/${currentSurvey.id}`}>
+                        <Button className="px-2 py-1 text-xs">
+                          Complete survey
+                        </Button>
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
           </TableBody>
         </Table>
       </div>

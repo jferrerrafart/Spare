@@ -1,5 +1,5 @@
-//import { PrismaClient } from "@prisma/client";
-//const prisma = new PrismaClient();
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 const UserModel = {
   async getUserData() {
     //const responses = await prisma.response.findMany();
@@ -13,5 +13,18 @@ const UserModel = {
   async getCompleteSurvey() {},
   async postAnswer() {},
   async getUserRewards() {},
+  async getNumberCompletedSurveys(user_id: number) {
+    const count = await prisma.response.count({
+      where: {
+        user_id: user_id,
+      },
+    });
+
+    const howManyResponses = {
+      numberResponses: count, //countCompanySurveys(surveys),
+      //los otros parámetros que quiera
+    };
+    return howManyResponses;
+  },
 };
 export default UserModel;

@@ -19,3 +19,17 @@ export interface iSurvey2 {
   option_c: string;
   option_d: string;
 }
+
+export interface iResponse {
+  survey_id: number;
+  selected_option: String;
+}
+
+export interface iResults {
+  survey_id: number;
+  totalResponses: number;
+  option_a: number;
+  option_b: number;
+  option_c: number;
+  option_d: number;
+}

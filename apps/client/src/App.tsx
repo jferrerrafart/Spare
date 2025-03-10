@@ -8,7 +8,7 @@ import CreateSurvey from "./components/CreateSurvey/createSurvey";
 import Results from "./components/results/results";
 import UserDashboard from "./components/UserDashboard/userdashboard";
 import Sparelogo from "/home/josepferrer/BootCamp/Spare/my-turborepo/apps/client/src/utils/Sparelogo.jpg";
-import SurveyComplete from "./components/SurveComplete/surveycomplete";
+import SurveyComplete from "./components/SurveyComplete/surveycomplete";
 
 function App() {
   // tendré que crear un state para cuando pulser user view navegar a su dashboard

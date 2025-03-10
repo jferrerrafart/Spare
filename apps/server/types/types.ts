@@ -7,3 +7,8 @@ export interface iSurvey {
   option_c: string;
   option_d: string;
 }
+export interface iResponse {
+  user_id: number;
+  survey_id: number;
+  selected_option: string;
+}
