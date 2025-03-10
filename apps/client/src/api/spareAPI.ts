@@ -1,25 +1,25 @@
 import { string } from "zod";
-
+import { iSurvey2 } from "types/types";
 const spareAPI = {
   async getCreatedSurveys() {
     const response = await fetch(`http://localhost:8080/company/1/surveys`);
     const data = await response.json();
     return data;
   },
-  async postCreateSurvey() {
+  async getSurveyData() {
+    const response = await fetch(`http://localhost:8080/company/1`);
+    const data = await response.json();
+    return data;
+  },
+  async postCreateSurvey(survey: iSurvey2) {
     const response = await fetch(`http://localhost:8080/company/1/survey`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        "1": string,
-        title: string,
-        question: string,
-        option_a: string,
-        option_b: string,
-        option_c: string,
-        option_d: string,
+        company_id: 1,
+        ...survey,
       }),
     });
 

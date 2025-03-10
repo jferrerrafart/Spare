@@ -16,7 +16,7 @@ import moment from "moment";
 
 import { iSurvey } from "/home/josepferrer/BootCamp/Spare/my-turborepo/apps/client/types/types.ts";
 
-function Dashboard() {
+function UserDashboard() {
   const [countSurveys, setCountSurveys] = useState(0);
   const [surveyList, setSurveyList] = useState<iSurvey[]>([]);
   async function fetchData() {
@@ -38,11 +38,21 @@ function Dashboard() {
   return (
     <>
       <div className="flex justify-center space-x-30 mt-6 px-4 py-20">
-        <p className="font-medium">Company name</p>
-        <p>Surveys created: {countSurveys}</p>
-        <Link to="/create-survey">
-          <Button>Create New Survey</Button>
-        </Link>
+        <p className="font-medium">Username</p>
+        <div>
+          <p>Current rewards:</p>
+          <p>Surveys completed:</p>
+          <p>Daily strike bonus:</p>
+          <p>Survey completion bonus:</p>
+        </div>
+        <div className="flex flex-col space-y-4">
+          <Link to="/">
+            <Button className="w-full">Daily Strike</Button>
+          </Link>
+          <Link to="/">
+            <Button className="w-full">Withdraw rewards</Button>
+          </Link>
+        </div>
       </div>
 
       {/* Table Section */}
@@ -75,8 +85,10 @@ function Dashboard() {
                   <TableCell>2000</TableCell>
                   <TableCell className="text-center">23</TableCell>
                   <TableCell className="text-right px-0">
-                    <Link to={`/survey-results/${currentSurvey.id}`}>
-                      <Button className="px-2 py-1 text-xs">See results</Button>
+                    <Link to={`/survey-complete/${currentSurvey.id}`}>
+                      <Button className="px-2 py-1 text-xs">
+                        Complete survey
+                      </Button>
                     </Link>
                   </TableCell>
                 </TableRow>
@@ -89,4 +101,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default UserDashboard;

@@ -3,7 +3,7 @@ import { iSurvey } from "../../types/types";
 
 const prisma = new PrismaClient();
 const CompanyModel = {
-  async getCompanyData() {
+  async getSurveyData() {
     //const surveys = await prisma.survey.findMany(); //count()
     //Ahora de primeras vamos a hacer que nos dé el num de
     //surveys creadas por la compañía solo
@@ -11,10 +11,9 @@ const CompanyModel = {
     //aqui tengo que buscar segun el company ID a lo mejor
     //hay que pasarlo tambien...
     //}
-    const surveys = await prisma.survey.count();
+    const surveys = await prisma.survey.findMany();
     const stats = {
-      companySurveys: surveys, //countCompanySurveys(surveys),
-      //los otros parámetros que quiera
+      surveys: surveys,
     };
     return stats;
   },

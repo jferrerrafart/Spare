@@ -1,10 +1,9 @@
 import CompanyModel from "../Models/companyModel.ts";
 import { Request, Response } from "express";
 import { iSurvey } from "../../types/types";
-// no todas tienen que ser async
-//Esta funcion lee  la tabla de las surveys y saca la data
-export async function getCompanyDataController(_req: Request, res: Response) {
-  const data = await CompanyModel.getCompanyData();
+
+export async function getSurveyDataController(_req: Request, res: Response) {
+  const data = await CompanyModel.getSurveyData();
   res.status(200).json(data);
 }
 export function postCreateSurveyController(

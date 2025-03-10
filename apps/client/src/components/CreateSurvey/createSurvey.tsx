@@ -1,4 +1,10 @@
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -23,22 +29,27 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import spareAPI from "@/api/spareAPI";
+//import { useState } from "react";
 
 function CreateSurvey() {
-  // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      title: "",
+      question: "",
+      option_a: "",
+      option_b: "",
+      option_c: "",
+      option_d: "",
     },
   });
-
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  const navigate = useNavigate();
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    await spareAPI.postCreateSurvey(values);
     console.log(values);
+    navigate("/");
   }
+
   return (
     <div className="px-50 py-15">
       <Card>
@@ -49,151 +60,73 @@ function CreateSurvey() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="py-3">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
-              >
-                <FormField
-                  control={form.control}
-                  name="username"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Survey's title</FormLabel>
-                      <FormControl>
-                        <Input placeholder="..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </form>
-            </Form>
-          </div>
-          <div className="py-3">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
-              >
-                <FormField
-                  control={form.control}
-                  name="username"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Survey's question</FormLabel>
-                      <FormControl>
-                        <Input placeholder="..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </form>
-            </Form>
-          </div>
-          <div className="py-3">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
-              >
-                <FormField
-                  control={form.control}
-                  name="username"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Option A</FormLabel>
-                      <FormControl>
-                        <Input placeholder="..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </form>
-            </Form>
-          </div>
-          <div className="py-3">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
-              >
-                <FormField
-                  control={form.control}
-                  name="username"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Option B</FormLabel>
-                      <FormControl>
-                        <Input placeholder="..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </form>
-            </Form>
-          </div>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              {/* Título */}
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Survey's title</FormLabel>
+                    <FormControl>
+                      <Input placeholder="..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <div className="py-3">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
-              >
-                <FormField
-                  control={form.control}
-                  name="username"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Option C</FormLabel>
-                      <FormControl>
-                        <Input placeholder="..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </form>
-            </Form>
-          </div>
+              {/* Pregunta */}
+              <FormField
+                control={form.control}
+                name="question"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Survey's question</FormLabel>
+                    <FormControl>
+                      <Input placeholder="..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <div className="py-3">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
-              >
-                <FormField
-                  control={form.control}
-                  name="username"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Option D</FormLabel>
-                      <FormControl>
-                        <Input placeholder="..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </form>
-            </Form>
-          </div>
+              {/* Opciones */}
+              {["option_a", "option_b", "option_c", "option_d"].map(
+                (option) => (
+                  <FormField
+                    key={option}
+                    control={form.control}
+                    name={option as keyof z.infer<typeof formSchema>}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Option {option.split("_")[1].toUpperCase()}
+                        </FormLabel>
+                        <FormControl>
+                          <Input placeholder="..." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )
+              )}
+
+              <CardFooter className="flex justify-center space-x-4">
+                <Link to="/">
+                  <Button className="px-5 py-1 text-xs bg-white text-black border border-gray-300 hover:bg-gray-100">
+                    Cancel
+                  </Button>
+                </Link>
+                <Button type="submit" className="px-7 py-1 text-xs">
+                  Send
+                </Button>
+              </CardFooter>
+            </form>
+          </Form>
         </CardContent>
-        <CardFooter className="flex justify-center space-x-4">
-          <Link to="/">
-            <Button className="px-5 py-1 text-xs bg-white text-black border border-gray-300 hover:bg-gray-100">
-              Cancel
-            </Button>
-          </Link>
-          <Button type="submit" className="px-7 py-1 text-xs">
-            Send
-          </Button>
-        </CardFooter>
       </Card>
     </div>
   );

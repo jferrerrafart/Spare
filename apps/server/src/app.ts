@@ -11,7 +11,7 @@ import {
 } from "./Controllers/userControllers.ts";
 
 import {
-  getCompanyDataController,
+  getSurveyDataController,
   postCreateSurveyController,
   getCreatedSurveysController,
   getSurveyResultsController,
@@ -31,7 +31,7 @@ app.post("/user/1/survey/{survey_id}/answer", postAnswerController); //hardcoded
 app.get("/user/1/rewards", getUserRewardsController); // hardcoded "/user/{id}/rewards"
 
 //Company Endpoints
-app.get("/company/1", getCompanyDataController); //hardcoded "/company/{id}"
+app.get("/company/1", getSurveyDataController); //hardcoded "/company/{id}"
 app.post("/company/1/survey", postCreateSurveyController); //hardcoded "/company/{id}/survey"
 app.get("/company/1/surveys", getCreatedSurveysController); //hardcoded "/company/{id}/surveys"
 app.get("/company/1/survey/{survey_id}/results", getSurveyResultsController); //hardcoded "/company/{id}/survey/{survey_id}/results"
