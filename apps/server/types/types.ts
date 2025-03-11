@@ -12,3 +12,11 @@ export interface iResponse {
   survey_id: number;
   selected_option: string;
 }
+export interface iRegisterW {
+  wallet: string;
+  name: string;
+}
+export interface iRegisterU {
+  wallet: string;
+  username: string;
+}

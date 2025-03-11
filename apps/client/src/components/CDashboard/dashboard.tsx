@@ -30,11 +30,11 @@ function Dashboard() {
   const [countSurveys, setCountSurveys] = useState(0);
   const [surveyList, setSurveyList] = useState<iSurvey[]>([]);
   async function fetchData() {
-    const count = await spareAPI.getCreatedSurveys();
+    const count = await spareAPI.getCreatedSurveys(1);
     setCountSurveys(count.companySurveys);
   }
   async function fetchData2() {
-    const surveys = await spareAPI.getSurveyData();
+    const surveys = await spareAPI.getCompanySurveys(1);
     setSurveyList(surveys.surveys as iSurvey[]);
   }
 
@@ -90,11 +90,9 @@ function Dashboard() {
               <TableHead className="w-[100px]">Title</TableHead>
               <TableHead className="text-center">Created at</TableHead>
               <TableHead className="text-center">
-                Max Participants/completed
+                Current participants
               </TableHead>
-              <TableHead className="text-center">
-                Current Participants
-              </TableHead>
+              <TableHead className="text-center">Leading response</TableHead>
               <TableHead className="text-right">Results</TableHead>
             </TableRow>
           </TableHeader>

@@ -34,7 +34,7 @@ function UserDashboard() {
     setCountSurveys(count.companySurveys);
   }*/
   async function fetchData2() {
-    const surveys = await spareAPI.getSurveyData();
+    const surveys = await spareAPI.getAllSurveys();
     setSurveyList(surveys.surveys as iSurvey[]);
   }
   async function fetchData3() {
@@ -105,12 +105,9 @@ function UserDashboard() {
             <TableRow>
               <TableHead className="w-[100px]">Title</TableHead>
               <TableHead className="text-center">Created at</TableHead>
-              <TableHead className="text-center">
-                Max Participants/completed
-              </TableHead>
-              <TableHead className="text-center">
-                Current Participants
-              </TableHead>
+              <TableHead className="text-center">Company</TableHead>
+              <TableHead className="text-center">My response</TableHead>
+              <TableHead className="text-center">Completed</TableHead>
               <TableHead className="text-right">Results</TableHead>
             </TableRow>
           </TableHeader>
@@ -130,8 +127,9 @@ function UserDashboard() {
                     <TableCell>
                       {moment(currentSurvey.created_at).fromNow()}
                     </TableCell>
-                    <TableCell>2000</TableCell>
-                    <TableCell className="text-center">23</TableCell>
+                    <TableCell>Consensys</TableCell>
+                    <TableCell className="text-center">Not at all</TableCell>
+                    <TableCell className="text-center">No</TableCell>
                     <TableCell className="text-right px-0">
                       <Link to={`/survey-complete/${currentSurvey.id}`}>
                         <Button className="px-2 py-1 text-xs bg-emerald-600">

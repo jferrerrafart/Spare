@@ -1,18 +1,17 @@
 import { PrismaClient } from "@prisma/client";
+import { iRegisterU, iResponse } from "../../types/types";
 const prisma = new PrismaClient();
 const UserModel = {
-  async getUserData() {
-    //const responses = await prisma.response.findMany();
-    //aqui va la funcion que nos creará la data que queremos obtener
-    //puedo sacar info de varias tablas como responses por ej
-    //(si es que es necesario vaya)
-    //llamo aqui dentro la funcion que he creado para obtener el dato
-    //y al final hago un return del dato que será un objeto
+  async getAllSurveys() {
+    const surveys = await prisma.survey.findMany();
+    const stats = {
+      surveys: surveys,
+    };
+    return stats;
   },
-  async getAvailableSurveys() {},
-  async getCompleteSurvey() {},
-  async postAnswer() {},
-  async getUserRewards() {},
+  async postSurveyResults(surveyResults: iResponse) {
+    return await prisma.response.create({ data: surveyResults });
+  },
   async getNumberCompletedSurveys(user_id: number) {
     const count = await prisma.response.count({
       where: {
@@ -24,6 +23,14 @@ const UserModel = {
       numberResponses: count,
     };
     return howManyResponses;
+  },
+  async postRegisterWalletU(newRegister: iRegisterU) {
+    return await prisma.user.create({ data: newRegister });
+  },
+  async getFindWalletU(wallet: string) {
+    return await prisma.user.findUnique({
+      where: { wallet: wallet },
+    });
   },
 };
 export default UserModel;

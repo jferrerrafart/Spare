@@ -1,11 +1,7 @@
 import CompanyModel from "../Models/companyModel.ts";
 import { Request, Response } from "express";
-import { iResponse, iSurvey } from "../../types/types";
+import { iResponse, iSurvey, iRegisterW } from "../../types/types";
 
-export async function getSurveyDataController(_req: Request, res: Response) {
-  const data = await CompanyModel.getSurveyData();
-  res.status(200).json(data);
-}
 export async function getSurveybyIDController(req: Request, res: Response) {
   const { survey_id } = req.params;
   const data = await CompanyModel.getSurveybyID(Number(survey_id));
@@ -41,33 +37,40 @@ export function postCreateSurveyController(
 
   res.status(201).json({ message: "New survey created" });
 }
-export async function getCreatedSurveysController(
-  _req: Request,
-  res: Response
-) {
-  const data = await CompanyModel.getCreatedSurveys();
+export async function getCreatedSurveysController(req: Request, res: Response) {
+  const { company_id } = req.params;
+  const data = await CompanyModel.getCreatedSurveys(Number(company_id));
   res.status(200).json(data);
 }
-export async function postSurveyResultsController(
-  req: Request<{}, {}, iResponse>,
+
+export async function postRegisterWalletCompanyController(
+  req: Request<{}, {}, iRegisterW>,
   res: Response
 ) {
-  const { user_id, survey_id, selected_option } = req.body;
-
-  // Ensure correct typing
-  const newResponse: iResponse = {
-    user_id,
-    survey_id,
-    selected_option,
+  const { wallet, name } = req.body;
+  const newRegister: iRegisterW = {
+    wallet,
+    name,
   };
-
-  // Pass the correctly typed survey object
-  CompanyModel.postSurveyResults(newResponse);
-
-  res.status(201).json({ message: "New survey created" });
+  CompanyModel.postRegisterWalletC(newRegister);
 }
+
 export async function getSurveyResultsController(req: Request, res: Response) {
   const { survey_id } = req.params;
   const data = await CompanyModel.getSurveyResults(Number(survey_id));
+  res.status(200).json(data);
+}
+
+export async function getFindWalletCController(req: Request, res: Response) {
+  console.log("im here");
+  console.log(CompanyModel);
+  const { wallet } = req.params;
+  const found = await CompanyModel.getFindWalletC(wallet);
+  res.status(200).json(found);
+}
+
+export async function getCompanySurveysController(req: Request, res: Response) {
+  const { company_id } = req.params;
+  const data = await CompanyModel.getCompanySurveys(Number(company_id));
   res.status(200).json(data);
 }

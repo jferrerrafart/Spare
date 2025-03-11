@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -7,11 +7,80 @@ import Dashboard from "./components/CDashboard/dashboard";
 import CreateSurvey from "./components/CreateSurvey/createSurvey";
 import Results from "./components/results/results";
 import UserDashboard from "./components/UserDashboard/userdashboard";
-import Sparelogo from "/home/josepferrer/BootCamp/Spare/my-turborepo/apps/client/src/utils/Sparelogo.jpg";
+import Sparelogohd from "/home/josepferrer/BootCamp/Spare/my-turborepo/apps/client/src/utils/Sparelogohd.jpg";
 import SurveyComplete from "./components/SurveyComplete/surveycomplete";
+import { ethers } from "ethers";
+import { MetaMaskInpageProvider } from "@metamask/providers";
+import spareAPI from "@/api/spareAPI";
+
+declare global {
+  interface Window {
+    ethereum?: MetaMaskInpageProvider;
+  }
+}
+
+//const providerUrl =
+//"https://base-sepolia.infura.io/v3/626b7233f4b0479cbfeba309abad79ab";
+//const provider = new ethers.JsonRpcProvider(providerUrl);
 
 function App() {
-  // tendré que crear un state para cuando pulser user view navegar a su dashboard
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [userId, setUserId] = useState<number | null>(null);
+  const [companyId, setCompanyId] = useState<number | null>(null);
+
+  const connectWallet = async () => {
+    console.log("button working");
+    if (!window.ethereum) {
+      alert("MetaMask is not installed. Please install it.");
+      return;
+    }
+
+    try {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+
+      const signer = await provider.getSigner();
+      const address = await signer.getAddress();
+      setWalletAddress(address);
+      console.log("Connected Wallet Address:", address);
+    } catch (error) {
+      console.error("Error connecting wallet:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (walletAddress) {
+      const checkWallet = async () => {
+        try {
+          let userResponse = await spareAPI.getFindWalletU(walletAddress);
+          let companyResponse = await spareAPI.getFindWalletC(walletAddress);
+
+          if (userResponse) {
+            setUserId(userResponse.id);
+          } else {
+            console.log("Registering new user...");
+            await spareAPI.postRegisterWalletU(walletAddress);
+            // Fetch again to ensure it's in the database
+            userResponse = await spareAPI.getFindWalletU(walletAddress);
+            setUserId(userResponse?.id || null);
+          }
+
+          if (companyResponse) {
+            setCompanyId(companyResponse.id);
+          } else {
+            console.log("Registering new company...");
+            await spareAPI.postRegisterWalletC(walletAddress);
+            companyResponse = await spareAPI.getFindWalletC(walletAddress);
+            setCompanyId(companyResponse?.id || null);
+          }
+        } catch (error) {
+          console.error("Error fetching or creating wallet info:", error);
+        }
+      };
+
+      checkWallet();
+    }
+  }, [walletAddress]);
+
   return (
     <Router>
       {/* Header Section */}
@@ -44,10 +113,14 @@ function App() {
           </ToggleGroup>
         </div>
         <h1 className="absolute left-1/2 transform -translate-x-1/2 text-lg font-bold">
-          <img src={Sparelogo} alt="Logo" className="h-13" />
+          <img src={Sparelogohd} alt="Logo" className="h-13" />
         </h1>
         <div className="ml-auto">
-          <Button className="bg-emerald-600">Connect Wallet</Button>
+          <Button className="bg-emerald-600" onClick={connectWallet}>
+            {walletAddress
+              ? walletAddress.slice(0, 6) + "..." + walletAddress.slice(-4)
+              : "Connect Wallet"}
+          </Button>
         </div>
       </div>
       <Routes>
