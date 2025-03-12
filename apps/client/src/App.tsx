@@ -52,20 +52,23 @@ function App() {
     }
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (walletAddress) {
       const checkWallet = async () => {
         try {
-          let userResponse = await spareAPI.getFindWalletU(walletAddress);
-          let companyResponse = await spareAPI.getFindWalletC(walletAddress);
+          /*let userResponse = await spareAPI.getFindWalletU(walletAddress);
+          let companyResponse = await spareAPI.getFindWalletC(walletAddress);*/ /*
+          const [userResponse, companyResponse] = await Promise.all([
+            spareAPI.getFindWalletU(walletAddress),
+            spareAPI.getFindWalletC(walletAddress),
+          ]);
 
           if (userResponse) {
             setUserId(userResponse.id);
           } else {
             console.log("Registering new user...");
             await spareAPI.postRegisterWalletU(walletAddress);
-            // Fetch again to ensure it's in the database
-            userResponse = await spareAPI.getFindWalletU(walletAddress);
+            const userResponse = await spareAPI.getFindWalletU(walletAddress);
             setUserId(userResponse?.id || null);
           }
 
@@ -74,9 +77,50 @@ function App() {
           } else {
             console.log("Registering new company...");
             await spareAPI.postRegisterWalletC(walletAddress);
-            companyResponse = await spareAPI.getFindWalletC(walletAddress);
+            const companyResponse =
+              await spareAPI.getFindWalletC(walletAddress);
             setCompanyId(companyResponse?.id || null);
           }
+        } catch (error) {
+          console.error("Error fetching or creating wallet info:", error);
+        }
+      };
+
+      checkWallet();
+    }
+  }, [walletAddress]);*/
+  useEffect(() => {
+    if (walletAddress) {
+      const checkWallet = async () => {
+        try {
+          // First, try to fetch the existing user and company information
+          const [userResponse, companyResponse] = await Promise.all([
+            spareAPI.getFindWalletU(walletAddress),
+            spareAPI.getFindWalletC(walletAddress),
+          ]);
+
+          // If the user does not exist, register the user
+          if (!userResponse) {
+            console.log("Registering new user...");
+            await spareAPI.postRegisterWalletU(walletAddress);
+          }
+
+          // If the company does not exist, register the company
+          if (!companyResponse) {
+            console.log("Registering new company...");
+            await spareAPI.postRegisterWalletC(walletAddress);
+          }
+
+          // Fetch both user and company information again after registration
+          const [updatedUserResponse, updatedCompanyResponse] =
+            await Promise.all([
+              spareAPI.getFindWalletU(walletAddress),
+              spareAPI.getFindWalletC(walletAddress),
+            ]);
+
+          // Update state with the newly fetched information
+          setUserId(updatedUserResponse?.id || null);
+          setCompanyId(updatedCompanyResponse?.id || null);
         } catch (error) {
           console.error("Error fetching or creating wallet info:", error);
         }
