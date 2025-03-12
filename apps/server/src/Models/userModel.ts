@@ -10,7 +10,16 @@ const UserModel = {
     return stats;
   },
   async postSurveyResults(surveyResults: iResponse) {
-    return await prisma.response.create({ data: surveyResults });
+    //return await prisma.response.create({ data: surveyResults });
+    await prisma.$transaction([
+      prisma.response.create({
+        data: surveyResults,
+      }),
+      prisma.survey.update({
+        where: { id: surveyResults.survey_id },
+        data: { responses_count: { increment: 1 } },
+      }),
+    ]);
   },
   async getNumberCompletedSurveys(user_id: number) {
     const count = await prisma.response.count({
