@@ -63,6 +63,7 @@ export async function postRegisterWalletUserController(
     username,
   };
   UserModel.postRegisterWalletU(newRegister);
+  res.status(201).json({ message: "New wallet created" });
 }
 export async function getFindWalletUController(req: Request, res: Response) {
   const { wallet } = req.params;

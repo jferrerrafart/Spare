@@ -78,6 +78,7 @@ const spareAPI = {
         name: "defaultname",
       }),
     });
+    return response.json();
   },
   async postRegisterWalletU(wallet: string) {
     const response = await fetch(`http://localhost:8080/registerwalletu`, {
@@ -90,6 +91,7 @@ const spareAPI = {
         username: "defaultname",
       }),
     });
+    return response.json();
   },
   async getFindWalletC(wallet: string) {
     const response = await fetch(`http://localhost:8080/findwalletc/${wallet}`);

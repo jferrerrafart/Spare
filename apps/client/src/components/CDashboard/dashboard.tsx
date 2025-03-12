@@ -56,7 +56,7 @@ const Dashboard: React.FC<DashboardProps> = ({ companyId }) => {
     const responses: Record<number, number> = {};
     for (const survey of surveys.surveys) {
       const surveyResults = await spareAPI.getSurveyResults(survey.id);
-      responses[survey.id] = surveyResults.totalresponses; // Suponiendo que 'totalresponses' esté en la respuesta
+      responses[survey.id] = surveyResults.totalresponses;
     }
     setSurveyResponses(responses);
   }
@@ -166,7 +166,7 @@ const Dashboard: React.FC<DashboardProps> = ({ companyId }) => {
                       {moment(currentSurvey.created_at).fromNow()}
                     </TableCell>
                     <TableCell className="text-center">
-                      {totalParticipants}
+                      {currentSurvey.responses_count}
                     </TableCell>
                     <TableCell className="text-right px-0">
                       <Link to={`/survey-results/${currentSurvey.id}`}>

@@ -53,6 +53,7 @@ export async function postRegisterWalletCompanyController(
     name,
   };
   CompanyModel.postRegisterWalletC(newRegister);
+  res.status(201).json({ message: "New wallet created" });
 }
 
 export async function getSurveyResultsController(req: Request, res: Response) {
