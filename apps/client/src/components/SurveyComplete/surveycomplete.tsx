@@ -21,7 +21,12 @@ import { useEffect, useState } from "react";
 import spareAPI from "@/api/spareAPI";
 import { iSurvey } from "/home/josepferrer/BootCamp/Spare/my-turborepo/apps/client/types/types.ts";
 
-function SurveyComplete() {
+interface SurveyCompleteProps {
+  userId: number | null;
+}
+
+const SurveyComplete: React.FC<SurveyCompleteProps> = ({ userId }) => {
+  //function SurveyComplete() {
   let params = useParams();
   const [survey, setSurvey] = useState<iSurvey | null>(null);
   const [selectedOption, setSelectedOption] = useState<string>("option_a");
@@ -36,9 +41,11 @@ function SurveyComplete() {
   }, []);
 
   const navigate = useNavigate();
+
   async function sendResponse() {
     if (survey?.id) {
       const responseData = {
+        user_id: userId,
         survey_id: survey.id,
         selected_option: selectedOption,
       };
@@ -107,6 +114,6 @@ function SurveyComplete() {
       </Card>
     </div>
   );
-}
+};
 
 export default SurveyComplete;

@@ -1,6 +1,10 @@
 import { z } from "zod";
 
 export const formSchema = z.object({
+  company_id: z
+    .number()
+    .int()
+    .positive({ message: "Company ID must be a positive number." }),
   title: z.string().min(2, { message: "Title must be at least 2 characters." }),
   question: z
     .string()

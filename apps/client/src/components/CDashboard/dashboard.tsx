@@ -23,27 +23,41 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import spareAPI from "@/api/spareAPI";
 import moment from "moment";
 import consensyslogo from "/home/josepferrer/BootCamp/Spare/my-turborepo/apps/client/src/utils/consensyslogo.jpg";
-
+import React from "react";
 import { iSurvey } from "/home/josepferrer/BootCamp/Spare/my-turborepo/apps/client/types/types.ts";
 
-function Dashboard() {
+interface DashboardProps {
+  companyId: number | null;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ companyId }) => {
+  //function Dashboard() {
   const [countSurveys, setCountSurveys] = useState(0);
+  console.log(companyId);
   const [surveyList, setSurveyList] = useState<iSurvey[]>([]);
   async function fetchData() {
-    const count = await spareAPI.getCreatedSurveys(1);
+    const count = await spareAPI.getCreatedSurveys(Number(companyId));
     setCountSurveys(count.companySurveys);
   }
   async function fetchData2() {
-    const surveys = await spareAPI.getCompanySurveys(1);
+    const surveys = await spareAPI.getCompanySurveys(Number(companyId));
     setSurveyList(surveys.surveys as iSurvey[]);
   }
 
-  useEffect(() => {
+  /*useEffect(() => {
     setInterval(() => {
       fetchData();
       fetchData2();
     }, 1000);
-  }, []);
+  }, []);*/
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchData();
+      fetchData2();
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [companyId]);
 
   return (
     <>
@@ -129,6 +143,6 @@ function Dashboard() {
       </div>
     </>
   );
-}
+};
 
 export default Dashboard;

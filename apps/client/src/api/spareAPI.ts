@@ -30,10 +30,7 @@ const spareAPI = {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        user_id: 1,
-        ...surveyResponse,
-      }),
+      body: JSON.stringify(surveyResponse),
     });
 
     if (!response.ok) {
@@ -48,10 +45,7 @@ const spareAPI = {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        company_id: 1,
-        ...survey,
-      }),
+      body: JSON.stringify(survey),
     });
 
     if (!response.ok) {
@@ -104,6 +98,13 @@ const spareAPI = {
   },
   async getFindWalletU(wallet: string) {
     const response = await fetch(`http://localhost:8080/findwalletu/${wallet}`);
+    const data = await response.json();
+    return data;
+  },
+  async getSCompletionCheck(user_id: number, survey_id: number) {
+    const response = await fetch(
+      `http://localhost:8080/getSCompletionCheck/${user_id}/${survey_id}`
+    );
     const data = await response.json();
     return data;
   },

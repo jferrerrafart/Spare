@@ -25,7 +25,12 @@ import moment from "moment";
 
 import { iSurvey } from "/home/josepferrer/BootCamp/Spare/my-turborepo/apps/client/types/types.ts";
 
-function UserDashboard() {
+interface UserDashboardProps {
+  userId: number | null;
+}
+
+const UserDashboard: React.FC<UserDashboardProps> = ({ userId }) => {
+  //function UserDashboard() {
   //const [countSurveys, setCountSurveys] = useState(0);
   const [surveyList, setSurveyList] = useState<iSurvey[]>([]);
   const [numberResp, setNumberResp] = useState(0);
@@ -38,17 +43,25 @@ function UserDashboard() {
     setSurveyList(surveys.surveys as iSurvey[]);
   }
   async function fetchData3() {
-    const count = await spareAPI.getNumberResponses(1); // aquí iría el user_id, lo he hardcodeado
+    const count = await spareAPI.getNumberResponses(Number(userId)); // aquí iría el user_id, lo he hardcodeado
     setNumberResp(count.numberResponses);
   }
 
-  useEffect(() => {
+  /*useEffect(() => {
     setInterval(() => {
       //fetchData();
       fetchData2();
       fetchData3();
     }, 1000);
-  }, []);
+  }, []);*/
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchData2();
+      fetchData3();
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [userId]);
 
   return (
     <>
@@ -145,6 +158,6 @@ function UserDashboard() {
       </div>
     </>
   );
-}
+};
 
 export default UserDashboard;

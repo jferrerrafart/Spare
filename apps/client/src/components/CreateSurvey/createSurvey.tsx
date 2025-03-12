@@ -29,12 +29,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import spareAPI from "@/api/spareAPI";
+import React from "react";
 //import { useState } from "react";
+interface CreateSurveyProps {
+  companyId: number | null;
+}
 
-function CreateSurvey() {
+const CreateSurvey: React.FC<CreateSurveyProps> = ({ companyId }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      company_id: companyId ?? undefined,
       title: "",
       question: "",
       option_a: "",
@@ -130,6 +135,6 @@ function CreateSurvey() {
       </Card>
     </div>
   );
-}
+};
 
 export default CreateSurvey;

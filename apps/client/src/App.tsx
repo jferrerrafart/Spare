@@ -1,4 +1,10 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+  createContext,
+  ReactNode,
+  useContext,
+} from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -12,6 +18,7 @@ import SurveyComplete from "./components/SurveyComplete/surveycomplete";
 import { ethers } from "ethers";
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import spareAPI from "@/api/spareAPI";
+import WelcomeScreen from "./components/WelcomeScreen/welcomescreen";
 
 declare global {
   interface Window {
@@ -29,7 +36,6 @@ function App() {
   const [companyId, setCompanyId] = useState<number | null>(null);
 
   const connectWallet = async () => {
-    console.log("button working");
     if (!window.ethereum) {
       alert("MetaMask is not installed. Please install it.");
       return;
@@ -37,7 +43,6 @@ function App() {
 
     try {
       const provider = new ethers.BrowserProvider(window.ethereum);
-
       const signer = await provider.getSigner();
       const address = await signer.getAddress();
       setWalletAddress(address);
@@ -123,13 +128,26 @@ function App() {
           </Button>
         </div>
       </div>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/create-survey" element={<CreateSurvey />} />
-        <Route path="/survey-results/:id" element={<Results />} />
-        <Route path="/user-dashboard" element={<UserDashboard />} />
-        <Route path="/survey-complete/:id" element={<SurveyComplete />} />
-      </Routes>
+      {walletAddress ? (
+        <Routes>
+          <Route path="/" element={<Dashboard companyId={companyId} />} />
+          <Route
+            path="/create-survey"
+            element={<CreateSurvey companyId={companyId} />}
+          />
+          <Route path="/survey-results/:id" element={<Results />} />
+          <Route
+            path="/user-dashboard"
+            element={<UserDashboard userId={userId} />}
+          />
+          <Route
+            path="/survey-complete/:id"
+            element={<SurveyComplete userId={userId} />}
+          />
+        </Routes>
+      ) : (
+        <WelcomeScreen />
+      )}
     </Router>
   );
 }

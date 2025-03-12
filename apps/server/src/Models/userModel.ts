@@ -32,5 +32,13 @@ const UserModel = {
       where: { wallet: wallet },
     });
   },
+  async getSCompletionCheck(user_id: number, survey_id: number) {
+    return await prisma.response.findFirst({
+      where: {
+        user_id: user_id,
+        survey_id: survey_id,
+      },
+    });
+  },
 };
 export default UserModel;

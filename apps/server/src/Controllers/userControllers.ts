@@ -69,3 +69,14 @@ export async function getFindWalletUController(req: Request, res: Response) {
   const found = await UserModel.getFindWalletU(wallet);
   res.status(200).json(found);
 }
+export async function getSCompletionCheckController(
+  req: Request,
+  res: Response
+) {
+  const { user_id, survey_id } = req.params;
+  const completed = await UserModel.getSCompletionCheck(
+    Number(user_id),
+    Number(survey_id)
+  );
+  res.status(200).json(completed);
+}

@@ -7,7 +7,8 @@ import {
   getNumberCompletedSurveysController,
   postRegisterWalletUserController,
   getFindWalletUController,
-  getAllSurveysController, // Check this one
+  getAllSurveysController,
+  getSCompletionCheckController,
 } from "./Controllers/userControllers.ts";
 
 import {
@@ -35,6 +36,10 @@ app.get(
 app.post("/registerwalletu", postRegisterWalletUserController);
 app.get("/findwalletu/:wallet", getFindWalletUController);
 app.get("/getAllSurveys", getAllSurveysController);
+app.get(
+  "/getSCompletionCheck/:user_id/:survey_id",
+  getSCompletionCheckController
+);
 
 //Company Endpoints
 
