@@ -72,7 +72,7 @@ const Dashboard: React.FC<DashboardProps> = ({ companyId }) => {
                   <AvatarImage src={consensyslogo} />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                <p className="font-medium">Consensys</p>
+                <p className="font-medium">Company name</p>
               </div>
               <div className="max-w-4xl mx-auto ">
                 <Card className="bg-emerald-600 text-white font-bold p-6">
@@ -98,7 +98,9 @@ const Dashboard: React.FC<DashboardProps> = ({ companyId }) => {
       {/* Table Section */}
       <div className="px-30 py-10">
         <Table className="mt-4">
-          <TableCaption>A list of all surveys created</TableCaption>
+          <TableCaption>
+            A list of all surveys created by the company
+          </TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">Title</TableHead>

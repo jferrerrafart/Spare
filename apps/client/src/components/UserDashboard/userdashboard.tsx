@@ -34,6 +34,9 @@ const UserDashboard: React.FC<UserDashboardProps> = ({ userId }) => {
   //const [countSurveys, setCountSurveys] = useState(0);
   const [surveyList, setSurveyList] = useState<iSurvey[]>([]);
   const [numberResp, setNumberResp] = useState(0);
+  const [surveyCompletionStatus, setSurveyCompletionStatus] = useState<
+    Map<number, boolean>
+  >(new Map());
   /*async function fetchData() {
     const count = await spareAPI.getCreatedSurveys();
     setCountSurveys(count.companySurveys);
@@ -45,6 +48,18 @@ const UserDashboard: React.FC<UserDashboardProps> = ({ userId }) => {
   async function fetchData3() {
     const count = await spareAPI.getNumberResponses(Number(userId)); // aquí iría el user_id, lo he hardcodeado
     setNumberResp(count.numberResponses);
+  }
+
+  async function fetchSurveyCompletionStatus(surveyId: number) {
+    // Llamar a la API para saber si el usuario ha completado la encuesta
+    const isCompleted = await spareAPI.getSCompletionCheck(
+      Number(userId),
+      surveyId
+    );
+    // Actualizar el estado con el resultado de la llamada (YES o NO)
+    setSurveyCompletionStatus((prevStatus) =>
+      new Map(prevStatus).set(surveyId, !!isCompleted)
+    );
   }
 
   /*useEffect(() => {
@@ -62,6 +77,13 @@ const UserDashboard: React.FC<UserDashboardProps> = ({ userId }) => {
     }, 1000);
     return () => clearInterval(interval);
   }, [userId]);
+
+  useEffect(() => {
+    // Obtener el estado de completado de cada encuesta cuando se cargan las encuestas
+    surveyList.forEach((survey) => {
+      fetchSurveyCompletionStatus(survey.id);
+    });
+  }, [surveyList]);
 
   return (
     <>
@@ -118,8 +140,7 @@ const UserDashboard: React.FC<UserDashboardProps> = ({ userId }) => {
             <TableRow>
               <TableHead className="w-[100px]">Title</TableHead>
               <TableHead className="text-center">Created at</TableHead>
-              <TableHead className="text-center">Company</TableHead>
-              <TableHead className="text-center">My response</TableHead>
+              <TableHead className="text-center">Company ID</TableHead>
               <TableHead className="text-center">Completed</TableHead>
               <TableHead className="text-right">Results</TableHead>
             </TableRow>
@@ -132,6 +153,9 @@ const UserDashboard: React.FC<UserDashboardProps> = ({ userId }) => {
                   new Date(a.created_at).getTime()
               )
               .map((currentSurvey) => {
+                const completionStatus = surveyCompletionStatus.get(
+                  currentSurvey.id
+                );
                 return (
                   <TableRow key={currentSurvey.id}>
                     <TableCell className="font-medium text-left">
@@ -140,13 +164,17 @@ const UserDashboard: React.FC<UserDashboardProps> = ({ userId }) => {
                     <TableCell>
                       {moment(currentSurvey.created_at).fromNow()}
                     </TableCell>
-                    <TableCell>Consensys</TableCell>
-                    <TableCell className="text-center">Not at all</TableCell>
-                    <TableCell className="text-center">No</TableCell>
+                    <TableCell>{currentSurvey.company_id}</TableCell>
+                    <TableCell className="text-center">
+                      {completionStatus ? "YES" : "NO"}
+                    </TableCell>
                     <TableCell className="text-right px-0">
                       <Link to={`/survey-complete/${currentSurvey.id}`}>
-                        <Button className="px-2 py-1 text-xs bg-emerald-600">
-                          Complete survey
+                        <Button
+                          className={`px-2 py-1 text-xs ${completionStatus ? "bg-gray-400 w-27" : "bg-emerald-600"}`}
+                          disabled={completionStatus} // Disable the button if the survey is completed
+                        >
+                          {completionStatus ? "Done" : "Complete survey"}
                         </Button>
                       </Link>
                     </TableCell>
