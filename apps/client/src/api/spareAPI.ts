@@ -108,6 +108,13 @@ const spareAPI = {
     const data = await response.json();
     return data;
   },
+  async getAllResponses(company_id: number) {
+    const response = await fetch(
+      `http://localhost:8080/allresponses/${company_id}"`
+    );
+    const data = await response.json();
+    return data;
+  },
 };
 
 export default spareAPI;

@@ -33,3 +33,6 @@ export interface iResults {
   option_c: number;
   option_d: number;
 }
+export interface iCount {
+  totalResponses: number;
+}

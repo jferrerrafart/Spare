@@ -39,6 +39,29 @@ const CompanyModel = {
     };
     return stats;
   },
+  async getAllResponses(company_id: number) {
+    const totalResponses = await prisma.survey.findMany({
+      where: {
+        company_id: company_id,
+      },
+      include: {
+        _count: {
+          select: {
+            responses: true,
+          },
+        },
+      },
+    });
+    const totalResponsesCount = totalResponses.reduce(
+      (sum, survey) => sum + survey._count.responses,
+      0
+    );
+    const stats = {
+      totalResponses: totalResponsesCount,
+    };
+
+    return stats;
+  },
   async getSurveyResults(survey_id: number) {
     const totalResponses = await prisma.response.count({
       where: { survey_id },

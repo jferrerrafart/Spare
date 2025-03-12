@@ -22,9 +22,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import spareAPI from "@/api/spareAPI";
 import moment from "moment";
-import consensyslogo from "/home/josepferrer/BootCamp/Spare/my-turborepo/apps/client/src/utils/consensyslogo.jpg";
+//import consensyslogo from "/home/josepferrer/BootCamp/Spare/my-turborepo/apps/client/src/utils/consensyslogo.jpg";
+import avcomp from "/home/josepferrer/BootCamp/Spare/my-turborepo/apps/client/src/utils/avcomp.jpg";
 import React from "react";
-import { iSurvey } from "/home/josepferrer/BootCamp/Spare/my-turborepo/apps/client/types/types.ts";
+import {
+  iSurvey,
+  iCount,
+} from "/home/josepferrer/BootCamp/Spare/my-turborepo/apps/client/types/types.ts";
 
 interface DashboardProps {
   companyId: number | null;
@@ -35,6 +39,13 @@ const Dashboard: React.FC<DashboardProps> = ({ companyId }) => {
   const [countSurveys, setCountSurveys] = useState(0);
   console.log(companyId);
   const [surveyList, setSurveyList] = useState<iSurvey[]>([]);
+  const [totalResponses, setTotalResponses] = useState<iCount>({
+    totalResponses: 0,
+  });
+  const [surveyResponses, setSurveyResponses] = useState<
+    Record<number, number>
+  >({});
+
   async function fetchData() {
     const count = await spareAPI.getCreatedSurveys(Number(companyId));
     setCountSurveys(count.companySurveys);
@@ -42,6 +53,16 @@ const Dashboard: React.FC<DashboardProps> = ({ companyId }) => {
   async function fetchData2() {
     const surveys = await spareAPI.getCompanySurveys(Number(companyId));
     setSurveyList(surveys.surveys as iSurvey[]);
+    const responses: Record<number, number> = {};
+    for (const survey of surveys.surveys) {
+      const surveyResults = await spareAPI.getSurveyResults(survey.id);
+      responses[survey.id] = surveyResults.totalresponses; // Suponiendo que 'totalresponses' esté en la respuesta
+    }
+    setSurveyResponses(responses);
+  }
+  async function fetchData3() {
+    const allresponses = await spareAPI.getAllResponses(Number(companyId));
+    setTotalResponses(allresponses.totalResponses);
   }
 
   /*useEffect(() => {
@@ -55,9 +76,18 @@ const Dashboard: React.FC<DashboardProps> = ({ companyId }) => {
     const interval = setInterval(() => {
       fetchData();
       fetchData2();
+      //fetchData3();
     }, 1000);
     return () => clearInterval(interval);
   }, [companyId]);
+
+  /*useEffect(() => {
+    const interval = setInterval(async () => {
+      await Promise.all([fetchData(), fetchData2(), fetchData3()]);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [companyId]);*/
 
   return (
     <>
@@ -69,7 +99,7 @@ const Dashboard: React.FC<DashboardProps> = ({ companyId }) => {
               {/* Sección izquierda (Avatar y Username) */}
               <div className="flex flex-col items-center space-y-2 ml-10">
                 <Avatar className="w-25 h-25">
-                  <AvatarImage src={consensyslogo} />
+                  <AvatarImage src={avcomp} />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 <p className="font-medium">Company name</p>
@@ -78,8 +108,14 @@ const Dashboard: React.FC<DashboardProps> = ({ companyId }) => {
                 <Card className="bg-emerald-600 text-white font-bold p-6">
                   <CardContent>
                     <p>Surveys created: {countSurveys}</p>
-                    <p>Total responses obtained: </p>
-                    <p>Surveys created: </p>
+                    <p>
+                      Total responses obtained:{" "}
+                      {totalResponses !== null
+                        ? totalResponses.totalResponses
+                        : "Loading..."}
+                    </p>
+                    <p>Funds spent:</p>
+                    <p>Available to withdraw:</p>
                   </CardContent>
                 </Card>
               </div>
@@ -108,7 +144,6 @@ const Dashboard: React.FC<DashboardProps> = ({ companyId }) => {
               <TableHead className="text-center">
                 Current participants
               </TableHead>
-              <TableHead className="text-center">Leading response</TableHead>
               <TableHead className="text-right">Results</TableHead>
             </TableRow>
           </TableHeader>
@@ -120,6 +155,8 @@ const Dashboard: React.FC<DashboardProps> = ({ companyId }) => {
                   new Date(a.created_at).getTime()
               )
               .map((currentSurvey) => {
+                const totalParticipants =
+                  surveyResponses[currentSurvey.id] || 0;
                 return (
                   <TableRow key={currentSurvey.id}>
                     <TableCell className="font-medium text-left">
@@ -128,8 +165,9 @@ const Dashboard: React.FC<DashboardProps> = ({ companyId }) => {
                     <TableCell>
                       {moment(currentSurvey.created_at).fromNow()}
                     </TableCell>
-                    <TableCell>2000</TableCell>
-                    <TableCell className="text-center">23</TableCell>
+                    <TableCell className="text-center">
+                      {totalParticipants}
+                    </TableCell>
                     <TableCell className="text-right px-0">
                       <Link to={`/survey-results/${currentSurvey.id}`}>
                         <Button className="bg-emerald-600 px-2 py-1 text-xs">

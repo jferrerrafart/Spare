@@ -19,6 +19,7 @@ import {
   postRegisterWalletCompanyController,
   getFindWalletCController,
   getCompanySurveysController,
+  getAllResponsesController,
 } from "./Controllers/companyControllers.ts";
 
 const app = express();
@@ -51,5 +52,6 @@ app.get("/survey/:survey_id", getSurveybyIDController);
 app.get("/getresults/:survey_id", getSurveyResultsController);
 app.post("/registerwalletc", postRegisterWalletCompanyController);
 app.get("/findwalletc/:wallet", getFindWalletCController);
+app.get("/allresponses/:company_id", getAllResponsesController);
 
 export default app;

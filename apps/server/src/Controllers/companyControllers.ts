@@ -74,3 +74,9 @@ export async function getCompanySurveysController(req: Request, res: Response) {
   const data = await CompanyModel.getCompanySurveys(Number(company_id));
   res.status(200).json(data);
 }
+
+export async function getAllResponsesController(req: Request, res: Response) {
+  const { company_id } = req.params;
+  const data = await CompanyModel.getAllResponses(Number(company_id));
+  res.status(200).json(data);
+}
