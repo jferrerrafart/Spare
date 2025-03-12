@@ -39,9 +39,7 @@ const Dashboard: React.FC<DashboardProps> = ({ companyId }) => {
   const [countSurveys, setCountSurveys] = useState(0);
   console.log(companyId);
   const [surveyList, setSurveyList] = useState<iSurvey[]>([]);
-  const [totalResponses, setTotalResponses] = useState<iCount>({
-    totalResponses: 0,
-  });
+  const [totalResponses, setTotalResponses] = useState(0);
   const [surveyResponses, setSurveyResponses] = useState<
     Record<number, number>
   >({});
@@ -62,15 +60,10 @@ const Dashboard: React.FC<DashboardProps> = ({ companyId }) => {
   }
   async function fetchData3() {
     const allresponses = await spareAPI.getAllResponses(Number(companyId));
-    setTotalResponses(allresponses.totalResponses);
+    console.log("API Response:", allresponses); // Check the structure
+    console.log(allresponses.totalResponses);
+    setTotalResponses(Number(allresponses.totalResponses));
   }
-
-  /*useEffect(() => {
-    setInterval(() => {
-      fetchData();
-      fetchData2();
-    }, 1000);
-  }, []);*/
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -110,9 +103,7 @@ const Dashboard: React.FC<DashboardProps> = ({ companyId }) => {
                     <p>Surveys created: {countSurveys}</p>
                     <p>
                       Total responses obtained:{" "}
-                      {totalResponses !== null
-                        ? totalResponses.totalResponses
-                        : "Loading..."}
+                      {totalResponses !== null ? totalResponses : "Loading..."}
                     </p>
                     <p>Funds spent:</p>
                     <p>Available to withdraw:</p>

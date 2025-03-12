@@ -52,43 +52,6 @@ function App() {
     }
   };
 
-  /*useEffect(() => {
-    if (walletAddress) {
-      const checkWallet = async () => {
-        try {
-          /*let userResponse = await spareAPI.getFindWalletU(walletAddress);
-          let companyResponse = await spareAPI.getFindWalletC(walletAddress);*/ /*
-          const [userResponse, companyResponse] = await Promise.all([
-            spareAPI.getFindWalletU(walletAddress),
-            spareAPI.getFindWalletC(walletAddress),
-          ]);
-
-          if (userResponse) {
-            setUserId(userResponse.id);
-          } else {
-            console.log("Registering new user...");
-            await spareAPI.postRegisterWalletU(walletAddress);
-            const userResponse = await spareAPI.getFindWalletU(walletAddress);
-            setUserId(userResponse?.id || null);
-          }
-
-          if (companyResponse) {
-            setCompanyId(companyResponse.id);
-          } else {
-            console.log("Registering new company...");
-            await spareAPI.postRegisterWalletC(walletAddress);
-            const companyResponse =
-              await spareAPI.getFindWalletC(walletAddress);
-            setCompanyId(companyResponse?.id || null);
-          }
-        } catch (error) {
-          console.error("Error fetching or creating wallet info:", error);
-        }
-      };
-
-      checkWallet();
-    }
-  }, [walletAddress]);*/
   useEffect(() => {
     if (walletAddress) {
       const checkWallet = async () => {
