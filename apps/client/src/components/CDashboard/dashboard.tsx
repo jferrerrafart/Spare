@@ -95,7 +95,7 @@ const Dashboard: React.FC<DashboardProps> = ({ companyId }) => {
                   <AvatarImage src={avcomp} />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                <p className="font-medium">Company name</p>
+                <p className="font-medium">Company ID: {companyId}</p>
               </div>
               <div className="max-w-4xl mx-auto ">
                 <Card className="bg-emerald-600 text-white font-bold p-6">
@@ -105,8 +105,8 @@ const Dashboard: React.FC<DashboardProps> = ({ companyId }) => {
                       Total responses obtained:{" "}
                       {totalResponses !== null ? totalResponses : "Loading..."}
                     </p>
-                    <p>Funds spent:</p>
-                    <p>Available to withdraw:</p>
+                    <p>Funds spent: Available soon</p>
+                    <p>Available to withdraw: Available soon</p>
                   </CardContent>
                 </Card>
               </div>

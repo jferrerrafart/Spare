@@ -98,7 +98,7 @@ const UserDashboard: React.FC<UserDashboardProps> = ({ userId }) => {
                   <AvatarImage src="https://github.com/shadcn.png" />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                <p className="font-medium">Username</p>
+                <p className="font-medium">User ID: {userId}</p>
               </div>
 
               {/* Sección central (Estadísticas) */}
@@ -107,9 +107,9 @@ const UserDashboard: React.FC<UserDashboardProps> = ({ userId }) => {
                   <CardContent>
                     <p>Current rewards: {numberResp * 10} points!</p>
                     <p>Surveys completed: {numberResp}</p>
-                    <p>Daily strike count:</p>
-                    <p>Daily strike bonus:</p>
-                    <p>Survey completion bonus:</p>
+                    <p>Daily strike count: Available soon</p>
+                    <p>Daily strike bonus: Available soon</p>
+                    <p>Survey completion bonus: Available soon</p>
                   </CardContent>
                 </Card>
               </div>
