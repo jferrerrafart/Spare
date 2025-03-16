@@ -14,6 +14,7 @@ import CreateSurvey from "./components/CreateSurvey/createSurvey";
 import Results from "./components/results/results";
 import UserDashboard from "./components/UserDashboard/userdashboard";
 import Sparelogohd from "/home/josepferrer/BootCamp/Spare/my-turborepo/apps/client/src/utils/Sparelogohd.jpg";
+import logospare from "/home/josepferrer/BootCamp/Spare2/Spare/apps/client/src/utils/logospare.png";
 import SurveyComplete from "./components/SurveyComplete/surveycomplete";
 import { ethers } from "ethers";
 import { MetaMaskInpageProvider } from "@metamask/providers";
@@ -128,8 +129,8 @@ function App() {
               </Link>
             </ToggleGroup>
           </div>
-          <h1 className="absolute left-1/2 transform -translate-x-1/2 text-lg font-bold">
-            <img src={Sparelogohd} alt="Logo" className="h-13" />
+          <h1 className="absolute left-1/2 transform -translate-x-1/2 -translate-y-2 text-lg font-bold">
+            <img src={logospare} alt="Logo" className="h-78" />
           </h1>
           <div className="ml-auto flex items-center space-x-4">
             <ModeToggle />
