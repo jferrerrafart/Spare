@@ -101,7 +101,7 @@ function App() {
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <Router>
         {/* Header Section */}
-        <div className="relative flex items-center w-full px-0 py-2 border-b">
+        <div className="relative flex items-center w-full px-0 py-2">
           {/* Left Side: Toggle Group */}
           <div className="flex">
             <ToggleGroup
